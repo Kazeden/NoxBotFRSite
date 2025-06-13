@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NoxStream Experience</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap');
+
+    /* Animation de fond : dégradé nocturne mouvant */
+    @keyframes backgroundShift {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(-45deg, #0b0c10, #1f2833, #0b0c10, #45a29e);
+      background-size: 400% 400%;
+      animation: backgroundShift 20s ease infinite;
+      color: #f8f8f2;
+      margin: 0;
+      padding: 1rem;
+      transition: background-color 0.3s, color 0.3s;
+      overflow-x: hidden;
+    }
+
+    /* Titre avec effet pulsation */
+    h1 {
+      text-align: center;
+      font-family: 'Orbitron', monospace;
+      font-size: 3rem;
+      color: #66fcf1;
+      text-shadow:
+        0 0 5px #66fcf1,
+        0 0 10px #66fcf1,
+        0 0 20px #45a29e,
+        0 0 30px #45a29e;
+      animation: pulseTitle 3s ease-in-out infinite;
+      margin-bottom: 2rem;
+    }
+    @keyframes pulseTitle {
+      0%, 100% {
+        text-shadow:
+          0 0 5px #66fcf1,
+          0 0 10px #66fcf1,
+          0 0 20px #45a29e,
+          0 0 30px #45a29e;
+      }
+      50% {
+        text-shadow:
+          0 0 15px #66fcf1,
+          0 0 30px #66fcf1,
+          0 0 40px #45a29e,
+          0 0 50px #45a29e;
+      }
+    }
+
+    /* Liste des malus en grille fluide */
+    .malus-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    /* Style malus avec animation hover */
+    .malus {
+      background-color: rgba(31, 40, 51, 0.85);
+      border-radius: 10px;
+      border-left: 5px solid #45a29e;
+      padding: 1rem 1.5rem;
+      box-shadow: 0 0 5px #45a29e44;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: default;
+    }
+    .malus:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px #66fcf1aa;
+    }
+
+    .malus h3 {
+      margin-top: 0;
+      color: #66fcf1;
+      font-weight: 700;
+    }
+    .malus p {
+      margin: 0.5rem 0 1rem;
+      font-size: 0.9rem;
+      line-height: 1.3;
+      color: #c5c6c7;
+    }
+
+    /* Boutons stylisés avec effet néon au hover */
+    .malus button {
+      background-color: #66fcf1;
+      color: #0b0c10;
+      border: none;
+      border-radius: 5px;
+      padding: 0.6rem 1.2rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 0 5px #66fcf1bb;
+    }
+    .malus button:hover {
+      background-color: #45a29e;
+      box-shadow: 0 0 20px #45a29eee, 0 0 30px #66fcf1cc;
+    }
+
+    /* Footer simple */
+    .footer {
+      text-align: center;
+      margin-top: 3rem;
+      font-size: 0.85rem;
+      color: #a1a1a1;
+    }
+
+    /* Bouton mode sombre */
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background-color: #66fcf1;
+      color: #0b0c10;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      box-shadow: 0 0 10px #66fcf1bb;
+      transition: background-color 0.3s ease;
+      z-index: 1000;
+    }
+    .theme-toggle:hover {
+      background-color: #45a29e;
+    }
+
+    /* Animation flash pour activation malus */
+    @keyframes flashEffect {
+      0%, 100% {
+        background-color: transparent;
+      }
+      50% {
+        background-color: #66fcf1aa;
+      }
+    }
+
+    /* Container flash pour animation */
+    #flash-container {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      pointer-events: none;
+      z-index: 9999;
+      animation: none;
+    }
+    #flash-container.active {
+      animation: flashEffect 0.6s ease forwards;
+    }
+  </style>
+</head>
+<body>
+  <button class="theme-toggle" onclick="toggleTheme()">🌓 Mode</button>
+
+  <h1>🌘 NoxStream Experience</h1>
+
+  <div class="malus-list">
+    <div class="malus">
+      <h3>!aveugle</h3>
+      <p>Le flux est plongé dans l'obscurité ! Coupe toutes les lumières pendant 90 secondes.</p>
+      <button onclick="activerMalus('!aveugle')">Activer</button>
+    </div>
+    <div class="malus">
+      <h3>!freeze</h3>
+      <p>Tu restes figé pendant 1 minute, sans parler ni bouger.</p>
+      <button onclick="activerMalus('!freeze')">Activer</button>
+    </div>
+    <div class="malus">
+      <h3>!drop</h3>
+      <p>Pose un objet utile et continue sans lui.</p>
+      <button onclick="activerMalus('!drop')">Activer</button>
+    </div>
+    <div class="malus">
+      <h3>!retour</h3>
+      <p>Fais demi-tour et recule de 20 mètres.</p>
+      <button onclick="activerMalus('!retour')">Activer</button>
+    </div>
+    <div class="malus">
+      <h3>!doute</h3>
+      <p>Prononce "Je crois qu’on m’observe" et filme autour de toi lentement.</p>
+      <button onclick="activerMalus('!doute')">Activer</button>
+    </div>
+    <div class="malus">
+      <h3>!zone_rouge</h3>
+      <p>Entre dans un coin sombre et reste-y immobile pendant 1 minute.</p>
+      <button onclick="activerMalus('!zone_rouge')">Activer</button>
+    </div>
+    <div class="malus">
+      <h3>!reset</h3>
+      <p>Le défi en cours est annulé ! Tire un plus difficile.</p>
+      <button onclick="activerMalus('!reset')">Activer</button>
+    </div>
+    <div class="malus">
+      <h3>!bruit</h3>
+      <p>Crée un grand bruit (tape une branche, marche fort), risquant d’attirer une entité.</p>
+      <button onclick="activerMalus('!bruit')">Activer</button>
+    </div>
+  </div>
+
+  <div class="footer">
+    NoxStream Experience &copy; 2025 – Système interactif de malus en forêt paranormale.
+  </div>
+
+  <div id="flash-container"></div>
+
+  <script>
+    // Mode sombre simple toggle
+    function toggleTheme() {
+      const body = document.body;
+      if (body.style.backgroundColor
